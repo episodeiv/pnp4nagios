@@ -33,7 +33,11 @@ class Rrdtool_Model extends System_Model
 
         $rrdtool = $this->config->conf['rrdtool'] . " - ";
         $command = $this->RRD_CMD;
-        $process = proc_open($rrdtool, $descriptorspec, $pipes);
+
+        $cwd = sys_get_temp_dir();
+        $env = array('PANGO_RC_FILE', tempnam(sys_get_temp_dir(), 'pangorc-'));
+
+        $process = proc_open($rrdtool, $descriptorspec, $pipes, $cwd, $env);
         $debug = Array();
         $data = "";
         if (is_resource($process)) {
