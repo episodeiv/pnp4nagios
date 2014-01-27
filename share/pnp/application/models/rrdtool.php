@@ -35,7 +35,8 @@ class Rrdtool_Model extends System_Model
         $command = $this->RRD_CMD;
 
         $cwd = sys_get_temp_dir();
-        $env = array('PANGO_RC_FILE', tempnam(sys_get_temp_dir(), 'pangorc-'));
+        $pangorc = tempnam(sys_get_temp_dir(), 'pangorc-');
+        $env = array('PANGO_RC_FILE', $pangorc);
 
         $process = proc_open($rrdtool, $descriptorspec, $pipes, $cwd, $env);
         $debug = Array();
@@ -67,6 +68,8 @@ class Rrdtool_Model extends System_Model
         }else{
             $data =  "ERROR: proc_open(".$rrdtool." ... failed";
         }
+
+        unlink($pangorc);
         return $data;
 
     }
